@@ -1,12 +1,14 @@
 package com.teixeira.aizawa;
 
 import com.teixeira.aizawa.commands.ICommand;
+import com.teixeira.aizawa.components.IComponent;
 import java.util.ArrayList;
 import java.util.Collection;
 import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.JDABuilder;
 import net.dv8tion.jda.api.entities.Activity;
 import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
+import net.dv8tion.jda.api.events.interaction.component.ButtonInteractionEvent;
 import net.dv8tion.jda.api.events.session.ReadyEvent;
 import net.dv8tion.jda.api.events.session.ShutdownEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
@@ -64,6 +66,15 @@ public class Client extends ListenerAdapter {
       command.run(event);
 
       LOG.info("Command: " + event.getName() + " executed!");
+    }
+  }
+
+  @Override
+  public void onButtonInteraction(ButtonInteractionEvent event) {
+    IComponent component = IComponent.components.get(event.getComponentId());
+
+    if (component != null) {
+      component.run(event);
     }
   }
 

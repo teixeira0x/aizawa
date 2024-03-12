@@ -6,6 +6,7 @@ import com.teixeira.aizawa.utils.RandomUtils;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.entities.User;
 import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
+import net.dv8tion.jda.api.interactions.InteractionHook;
 import net.dv8tion.jda.api.interactions.commands.OptionType;
 
 public class HugCommand extends AbsSubCommand {
@@ -45,6 +46,10 @@ public class HugCommand extends AbsSubCommand {
     embed.setTitle(String.format(message, event.getUser().getAsMention(), user.getAsMention()));
     embed.setImage(hugGif.getUrl());
 
-    event.getHook().editOriginalEmbeds(embed.build()).queue();
+    InteractionHook hook = event.getHook();
+
+    hook.editOriginalEmbeds(embed.build()).queue();
   }
+
+  private void runHug() {}
 }
