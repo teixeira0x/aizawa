@@ -1,9 +1,9 @@
 package com.teixeira.aizawa.commands.common;
 
-import com.teixeira.aizawa.commands.ICommand;
+import com.teixeira.aizawa.commands.AbsCommand;
 import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
 
-public class PingCommand extends ICommand {
+public class PingCommand extends AbsCommand {
 
   public PingCommand() {
     super("ping", "Mostrar meu ping atual");
