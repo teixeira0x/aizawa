@@ -23,7 +23,7 @@ public class Client extends ListenerAdapter {
 
   @Override
   public void onReady(ReadyEvent event) {
-    jda.updateCommands().addCommands(ICommand.commands.values());
+    jda.updateCommands().addCommands(ICommand.commands.values()).queue();
   }
 
   @Override
