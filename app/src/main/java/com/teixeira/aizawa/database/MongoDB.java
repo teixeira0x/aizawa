@@ -30,7 +30,7 @@ public class MongoDB {
   private MongoDB() {
     try {
       mongoClient = MongoClients.create(getSettings());
-      database = mongoClient.getDatabase("simulator");
+      database = mongoClient.getDatabase("aizawa");
     } catch (MongoException e) {
       throw new RuntimeException("An error occurred when trying to connect to MongoDB!", e);
     }
