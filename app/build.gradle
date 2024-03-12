@@ -1,0 +1,30 @@
+plugins {
+  id 'application'
+}
+
+repositories {
+  mavenCentral()
+}
+
+dependencies {
+  implementation fileTree(dir: 'libs', include: ['*.jar'])
+
+  implementation("io.github.cdimascio:dotenv-java:3.0.0")
+  implementation("org.mongodb:mongodb-driver-sync:5.0.0")
+  implementation("net.dv8tion:JDA:5.0.0-beta.21")
+}
+
+// Apply a specific Java toolchain to ease working on different environments.
+java {
+  toolchain {
+    languageVersion = JavaLanguageVersion.of(17)
+  }
+}
+
+application {
+  mainClass = 'com.teixeira.aizawa.Main'
+}
+
+tasks.named('test') {
+  useJUnitPlatform()
+}
