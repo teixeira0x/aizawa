@@ -4,6 +4,7 @@ import com.teixeira.aizawa.commands.AbsSubCommand;
 import com.teixeira.aizawa.commands.roleplay.api.OtakusGifAPI;
 import com.teixeira.aizawa.components.ButtonComponent;
 import com.teixeira.aizawa.utils.RandomUtils;
+import java.awt.Color;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.entities.User;
 import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
@@ -14,7 +15,7 @@ import net.dv8tion.jda.api.interactions.components.buttons.ButtonStyle;
 
 public class HugCommand extends AbsSubCommand {
 
-  public HugCommand() {
+  HugCommand() {
     super("roleplay", "abraçar", "Abraçar um usuário");
 
     addOption(OptionType.USER, "usuário", "Usuário que deseja abraçar", true, false);
@@ -46,6 +47,7 @@ public class HugCommand extends AbsSubCommand {
     }
 
     EmbedBuilder embed = new EmbedBuilder();
+    embed.setColor(Color.RED);
     embed.setAuthor(sender.getName(), null, sender.getAvatarUrl());
     embed.setTitle(String.format(message, sender.getAsMention(), receiver.getAsMention()));
     embed.setImage(hugGif.getUrl());

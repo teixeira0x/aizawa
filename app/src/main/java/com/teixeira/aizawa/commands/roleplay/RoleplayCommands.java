@@ -8,7 +8,7 @@ public class RoleplayCommands extends AbsCommand {
   public RoleplayCommands() {
     super("roleplay", "Comandos relacionados a roleplay");
 
-    addSubcommands(new KissCommand(), new HugCommand());
+    addSubcommands(new KissCommand(), new HugCommand(), new PunchCommand());
   }
 
   @Override
