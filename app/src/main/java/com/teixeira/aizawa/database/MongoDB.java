@@ -10,7 +10,7 @@ import com.mongodb.client.MongoClient;
 import com.mongodb.client.MongoClients;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoDatabase;
-import com.teixeira.aizawa.Main;
+import com.teixeira.aizawa.Aizawa;
 import com.teixeira.aizawa.database.entity.UserEntity;
 import org.bson.codecs.configuration.CodecRegistry;
 import org.bson.codecs.pojo.PojoCodecProvider;
@@ -32,12 +32,13 @@ public class MongoDB {
       mongoClient = MongoClients.create(getSettings());
       database = mongoClient.getDatabase("aizawa");
     } catch (MongoException e) {
-      throw new RuntimeException("An error occurred when trying to connect to MongoDB!", e);
+      throw new RuntimeException("An error occurred when trying to connect to MongoDB", e);
     }
   }
 
   private MongoClientSettings getSettings() {
-    ConnectionString connectionString = new ConnectionString(Main.dotenv().get("MONGO_URI"));
+    ConnectionString connectionString =
+        new ConnectionString(Aizawa.getInstance().getEnv("MONGO_URI"));
 
     CodecRegistry pojoCodecRegistry =
         fromRegistries(
