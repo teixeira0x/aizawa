@@ -1,19 +1,20 @@
 package com.teixeira.aizawa.database.entity;
 
+import java.math.BigDecimal;
 import org.bson.types.ObjectId;
 
 public class UserEntity {
 
   private ObjectId id;
-  private int userId;
+  private long userId;
+  private BigDecimal balance;
 
-  public UserEntity(int userId) {
+  public UserEntity(long userId, BigDecimal balance) {
     this.userId = userId;
+    this.balance = balance;
   }
 
-  public UserEntity() {
-    userId = 0;
-  }
+  public UserEntity() {}
 
   public ObjectId getId() {
     return this.id;
@@ -23,11 +24,19 @@ public class UserEntity {
     this.id = id;
   }
 
-  public int getUserId() {
+  public long getUserId() {
     return this.userId;
   }
 
-  public void setUserId(int userId) {
+  public void setUserId(long userId) {
     this.userId = userId;
+  }
+
+  public BigDecimal getBalance() {
+    return this.balance;
+  }
+
+  public void setBalance(BigDecimal balance) {
+    this.balance = balance;
   }
 }

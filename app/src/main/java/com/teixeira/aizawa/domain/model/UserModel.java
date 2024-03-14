@@ -1,3 +1,5 @@
 package com.teixeira.aizawa.domain.model;
 
-public record UserModel(int id) {}
+import java.math.BigDecimal;
+
+public record UserModel(long id, BigDecimal balance) {}

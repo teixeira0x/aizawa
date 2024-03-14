@@ -2,6 +2,7 @@ package com.teixeira.aizawa;
 
 import com.teixeira.aizawa.commands.ICommand;
 import com.teixeira.aizawa.commands.common.PingCommand;
+import com.teixeira.aizawa.commands.economy.wallet.WalletCommands;
 import com.teixeira.aizawa.commands.roleplay.RoleplayCommands;
 import io.github.cdimascio.dotenv.Dotenv;
 
@@ -11,7 +12,7 @@ public class Main {
   private static Client client;
 
   private static final ICommand[] commands =
-      new ICommand[] {new PingCommand(), new RoleplayCommands()};
+      new ICommand[] {new PingCommand(), new RoleplayCommands(), new WalletCommands()};
 
   public static void main(String[] args) {
     dotenv = Dotenv.load();

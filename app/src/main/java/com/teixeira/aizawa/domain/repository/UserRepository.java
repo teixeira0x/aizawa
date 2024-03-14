@@ -14,9 +14,9 @@ public interface UserRepository {
 
   List<UserModel> getAll();
 
-  Optional<UserModel> getUser(int userId);
+  UserModel findUser(long userId);
 
   InsertOneResult insertUser(UserModel userModel);
 
-  DeleteResult removeUser(int userId);
+  DeleteResult removeUser(long userId);
 }

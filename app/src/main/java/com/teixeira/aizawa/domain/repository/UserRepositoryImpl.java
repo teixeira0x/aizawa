@@ -10,7 +10,6 @@ import com.teixeira.aizawa.database.entity.UserEntity;
 import com.teixeira.aizawa.domain.model.UserModel;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 public class UserRepositoryImpl implements UserRepository {
 
@@ -55,18 +54,19 @@ public class UserRepositoryImpl implements UserRepository {
   }
 
   @Override
-  public Optional<UserModel> getUser(int userId) {
+  public UserModel findUser(long userId) {
     try {
       UserModel result = entityToModel(collection.find(Filters.eq("userId", userId)).first());
-      return Optional.of(result);
+
+      return result;
     } catch (MongoException e) {
       e.printStackTrace();
     }
-    return Optional.empty();
+    return null;
   }
 
   @Override
-  public DeleteResult removeUser(int userId) {
+  public DeleteResult removeUser(long userId) {
     DeleteResult result = DeleteResult.unacknowledged();
     try {
       result = collection.deleteMany(Filters.in("userId", userId));
@@ -77,10 +77,16 @@ public class UserRepositoryImpl implements UserRepository {
   }
 
   private UserEntity modelToEntity(UserModel user) {
-    return new UserEntity(user.id());
+    if (user != null) {
+      return new UserEntity(user.id(), user.balance());
+    }
+    return null;
   }
 
   private UserModel entityToModel(UserEntity user) {
-    return new UserModel(user.getUserId());
+    if (user != null) {
+      return new UserModel(user.getUserId(), user.getBalance());
+    }
+    return null;
   }
 }
