@@ -16,7 +16,6 @@ import net.dv8tion.jda.api.interactions.commands.build.OptionData;
 import net.dv8tion.jda.api.interactions.components.buttons.Button;
 
 public class RoleplayCommands extends SlashCommand {
-
   public RoleplayCommands() {
     super("roleplay", "Comandos relacionados a roleplay");
 
@@ -28,7 +27,6 @@ public class RoleplayCommands extends SlashCommand {
   public void execute(SlashCommandInteractionEvent event) {}
 
   private abstract class BaseRoleplayCommand extends SlashCommand {
-
     public BaseRoleplayCommand(String name, String description) {
       super(name, description);
     }
@@ -44,7 +42,6 @@ public class RoleplayCommands extends SlashCommand {
   }
 
   private class HugCommand extends BaseRoleplayCommand {
-
     HugCommand() {
       super("abraçar", "Abraçar um usuário");
 
@@ -54,12 +51,13 @@ public class RoleplayCommands extends SlashCommand {
 
     @Override
     protected void executeRoleplay(InteractionHook hook, User sender, User receiver) {
-
       OtakusGifAPI hugGif = OtakusGifAPI.get("hug");
       if (hugGif == null) {
-        hook.setEphemeral(true)
-            .editOriginal("Não foi possivel obter um gif, tente novamente mais tarde!")
-            .queue();
+        hook.deleteOriginal().queue(unused -> {
+          hook.sendMessage("Não foi possivel obter um gif, tente novamente mais tarde!")
+              .setEphemeral(true)
+              .queue();
+        });
         return;
       }
 
@@ -77,35 +75,30 @@ public class RoleplayCommands extends SlashCommand {
           String.format(description, sender.getAsMention(), receiver.getAsMention()));
       embed.setImage(hugGif.getUrl());
 
-      Button button =
-          Button.primary("roleplay:hug:button", "Retribuir")
-              .withDisabled(sender.getIdLong() == receiver.getIdLong());
+      Button button = Button.primary("roleplay:hug:button", "Retribuir")
+                          .withDisabled(sender.getIdLong() == receiver.getIdLong());
 
       Message message = hook.editOriginalEmbeds(embed.build()).setActionRow(button).complete();
 
-      ButtonListener.createButtonAction(
-          message.getIdLong(),
-          60L,
-          event -> {
-            if (event.getUser().getIdLong() == sender.getIdLong()) {
-              event.reply("Você não pode retribuir seu próprio abraço!").setEphemeral(true).queue();
-              return ActionResult.IGNORED;
-            }
+      ButtonListener.createButtonAction(message.getIdLong(), 60L, event -> {
+        if (event.getUser().getIdLong() == sender.getIdLong()) {
+          event.reply("Você não pode retribuir seu próprio abraço!").setEphemeral(true).queue();
+          return ActionResult.IGNORED;
+        }
 
-            if (event.getUser().getIdLong() != receiver.getIdLong()) {
-              event.reply("Este abraço não foi para você!").setEphemeral(true).queue();
-              return ActionResult.IGNORED;
-            }
-            event.deferReply().queue();
+        if (event.getUser().getIdLong() != receiver.getIdLong()) {
+          event.reply("Este abraço não foi para você!").setEphemeral(true).queue();
+          return ActionResult.IGNORED;
+        }
+        event.deferReply().queue();
 
-            executeRoleplay(event.getHook(), event.getUser(), sender);
-            return ActionResult.COMPLETED;
-          });
+        executeRoleplay(event.getHook(), event.getUser(), sender);
+        return ActionResult.COMPLETED;
+      });
     }
   }
 
   private class KissCommand extends BaseRoleplayCommand {
-
     KissCommand() {
       super("beijar", "Beijar um usuário");
 
@@ -115,12 +108,13 @@ public class RoleplayCommands extends SlashCommand {
 
     @Override
     protected void executeRoleplay(InteractionHook hook, User sender, User receiver) {
-
       OtakusGifAPI kissGif = OtakusGifAPI.get("kiss");
       if (kissGif == null) {
-        hook.setEphemeral(true)
-            .editOriginal("Não foi possivel obter um gif, tente novamente mais tarde!")
-            .queue();
+        hook.deleteOriginal().queue(unused -> {
+          hook.sendMessage("Não foi possivel obter um gif, tente novamente mais tarde!")
+              .setEphemeral(true)
+              .queue();
+        });
         return;
       }
 
@@ -137,35 +131,30 @@ public class RoleplayCommands extends SlashCommand {
       embed.setTitle(String.format(description, sender.getAsMention(), receiver.getAsMention()));
       embed.setImage(kissGif.getUrl());
 
-      Button button =
-          Button.primary("roleplay:kiss:button", "Retribuir")
-              .withDisabled(sender.getIdLong() == receiver.getIdLong());
+      Button button = Button.primary("roleplay:kiss:button", "Retribuir")
+                          .withDisabled(sender.getIdLong() == receiver.getIdLong());
 
       Message message = hook.editOriginalEmbeds(embed.build()).setActionRow(button).complete();
 
-      ButtonListener.createButtonAction(
-          message.getIdLong(),
-          60L,
-          event -> {
-            if (event.getUser().getIdLong() == sender.getIdLong()) {
-              event.reply("Você não pode retribuir seu próprio beijo!").setEphemeral(true).queue();
-              return ActionResult.IGNORED;
-            }
+      ButtonListener.createButtonAction(message.getIdLong(), 60L, event -> {
+        if (event.getUser().getIdLong() == sender.getIdLong()) {
+          event.reply("Você não pode retribuir seu próprio beijo!").setEphemeral(true).queue();
+          return ActionResult.IGNORED;
+        }
 
-            if (event.getUser().getIdLong() != receiver.getIdLong()) {
-              event.reply("Este beijo não foi para você!").setEphemeral(true).queue();
-              return ActionResult.IGNORED;
-            }
-            event.deferReply().queue();
+        if (event.getUser().getIdLong() != receiver.getIdLong()) {
+          event.reply("Este beijo não foi para você!").setEphemeral(true).queue();
+          return ActionResult.IGNORED;
+        }
+        event.deferReply().queue();
 
-            executeRoleplay(event.getHook(), event.getUser(), sender);
-            return ActionResult.COMPLETED;
-          });
+        executeRoleplay(event.getHook(), event.getUser(), sender);
+        return ActionResult.COMPLETED;
+      });
     }
   }
 
   private class PunchCommand extends BaseRoleplayCommand {
-
     PunchCommand() {
       super("socar", "Socar um usuário");
 
@@ -175,12 +164,13 @@ public class RoleplayCommands extends SlashCommand {
 
     @Override
     protected void executeRoleplay(InteractionHook hook, User sender, User receiver) {
-
-      OtakusGifAPI hugGif = OtakusGifAPI.get("punch");
-      if (hugGif == null) {
-        hook.setEphemeral(true)
-            .editOriginal("Não foi possivel obter um gif, tente novamente mais tarde!")
-            .queue();
+      OtakusGifAPI punchGif = OtakusGifAPI.get("punch");
+      if (punchGif == null) {
+        hook.deleteOriginal().queue(unused -> {
+          hook.sendMessage("Não foi possivel obter um gif, tente novamente mais tarde!")
+              .setEphemeral(true)
+              .queue();
+        });
         return;
       }
 
@@ -195,32 +185,28 @@ public class RoleplayCommands extends SlashCommand {
       embed.setColor(Color.RED);
       embed.setAuthor(sender.getName(), null, sender.getAvatarUrl());
       embed.setTitle(String.format(description, sender.getAsMention(), receiver.getAsMention()));
-      embed.setImage(hugGif.getUrl());
+      embed.setImage(punchGif.getUrl());
 
-      Button button =
-          Button.primary("roleplay:punch:button", "Retribuir")
-              .withDisabled(sender.getIdLong() == receiver.getIdLong());
+      Button button = Button.primary("roleplay:punch:button", "Retribuir")
+                          .withDisabled(sender.getIdLong() == receiver.getIdLong());
 
       Message message = hook.editOriginalEmbeds(embed.build()).setActionRow(button).complete();
 
-      ButtonListener.createButtonAction(
-          message.getIdLong(),
-          60L,
-          event -> {
-            if (event.getUser().getIdLong() == sender.getIdLong()) {
-              event.reply("Você não pode retribuir seu próprio soco!").setEphemeral(true).queue();
-              return ActionResult.IGNORED;
-            }
+      ButtonListener.createButtonAction(message.getIdLong(), 60L, event -> {
+        if (event.getUser().getIdLong() == sender.getIdLong()) {
+          event.reply("Você não pode retribuir seu próprio soco!").setEphemeral(true).queue();
+          return ActionResult.IGNORED;
+        }
 
-            if (event.getUser().getIdLong() != receiver.getIdLong()) {
-              event.reply("Este soco não foi para você!").setEphemeral(true).queue();
-              return ActionResult.IGNORED;
-            }
-            event.deferReply().queue();
+        if (event.getUser().getIdLong() != receiver.getIdLong()) {
+          event.reply("Este soco não foi para você!").setEphemeral(true).queue();
+          return ActionResult.IGNORED;
+        }
+        event.deferReply().queue();
 
-            executeRoleplay(event.getHook(), event.getUser(), sender);
-            return ActionResult.COMPLETED;
-          });
+        executeRoleplay(event.getHook(), event.getUser(), sender);
+        return ActionResult.COMPLETED;
+      });
     }
   }
 }
