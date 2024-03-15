@@ -12,7 +12,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 public class Aizawa {
-
   private static final Logger LOG = LoggerFactory.getLogger(Aizawa.class);
 
   private static Aizawa sInstance;
@@ -33,13 +32,11 @@ public class Aizawa {
     dotenv = Dotenv.load();
 
     SlashCommandListener slashCommandListener =
-        new SlashCommandListener()
-            .addCommands(new PingCommand(), new RoleplayCommands(), new WalletCommands());
+        new SlashCommandListener().addCommands(new PingCommand(), new RoleplayCommands(), new WalletCommands());
 
-    jda =
-        JDABuilder.createDefault(getEnv("BOT_TOKEN"))
-            .addEventListeners(slashCommandListener, new ButtonListener())
-            .build();
+    jda = JDABuilder.createDefault(getEnv("BOT_TOKEN"))
+              .addEventListeners(slashCommandListener, new ButtonListener())
+              .build();
   }
 
   public String getEnv(String name) {

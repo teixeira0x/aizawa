@@ -15,7 +15,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 public class SlashCommandListener extends ListenerAdapter {
-
   private static final Logger LOG = LoggerFactory.getLogger("SlashCommandListener");
 
   private final Map<String, Integer> slashCommandsIndex = new HashMap<>();

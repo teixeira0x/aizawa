@@ -16,7 +16,6 @@ import java.util.Map;
  * @author Felipe Teixeira.
  */
 public class RequestUtils {
-
   /**
    * Returns data from the apiURL endpoint.
    *
@@ -27,8 +26,7 @@ public class RequestUtils {
     return get(type, apiURL, null);
   }
 
-  public static <T> T get(Class<T> type, String apiURL, Map<String, String> properties)
-      throws IOException {
+  public static <T> T get(Class<T> type, String apiURL, Map<String, String> properties) throws IOException {
     URL url = new URL(apiURL);
 
     HttpURLConnection conn = (HttpURLConnection) url.openConnection();

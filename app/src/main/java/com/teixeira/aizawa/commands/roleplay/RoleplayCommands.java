@@ -45,8 +45,7 @@ public class RoleplayCommands extends SlashCommand {
     HugCommand() {
       super("abraçar", "Abraçar um usuário");
 
-      setOptions(
-          new OptionData(OptionType.USER, "usuário", "Usuário que deseja abraçar", true, false));
+      setOptions(new OptionData(OptionType.USER, "usuário", "Usuário que deseja abraçar", true, false));
     }
 
     @Override
@@ -54,9 +53,7 @@ public class RoleplayCommands extends SlashCommand {
       OtakusGifAPI hugGif = OtakusGifAPI.get("hug");
       if (hugGif == null) {
         hook.deleteOriginal().queue(unused -> {
-          hook.sendMessage("Não foi possivel obter um gif, tente novamente mais tarde!")
-              .setEphemeral(true)
-              .queue();
+          hook.sendMessage("Não foi possivel obter um gif, tente novamente mais tarde!").setEphemeral(true).queue();
         });
         return;
       }
@@ -71,12 +68,11 @@ public class RoleplayCommands extends SlashCommand {
       EmbedBuilder embed = new EmbedBuilder();
       embed.setColor(Color.RED);
       embed.setAuthor(sender.getName(), null, sender.getAvatarUrl());
-      embed.setDescription(
-          String.format(description, sender.getAsMention(), receiver.getAsMention()));
+      embed.setDescription(String.format(description, sender.getAsMention(), receiver.getAsMention()));
       embed.setImage(hugGif.getUrl());
 
-      Button button = Button.primary("roleplay:hug:button", "Retribuir")
-                          .withDisabled(sender.getIdLong() == receiver.getIdLong());
+      Button button =
+          Button.primary("roleplay:hug:button", "Retribuir").withDisabled(sender.getIdLong() == receiver.getIdLong());
 
       Message message = hook.editOriginalEmbeds(embed.build()).setActionRow(button).complete();
 
@@ -102,8 +98,7 @@ public class RoleplayCommands extends SlashCommand {
     KissCommand() {
       super("beijar", "Beijar um usuário");
 
-      setOptions(
-          new OptionData(OptionType.USER, "usuário", "Usuário que deseja beijar", true, false));
+      setOptions(new OptionData(OptionType.USER, "usuário", "Usuário que deseja beijar", true, false));
     }
 
     @Override
@@ -111,9 +106,7 @@ public class RoleplayCommands extends SlashCommand {
       OtakusGifAPI kissGif = OtakusGifAPI.get("kiss");
       if (kissGif == null) {
         hook.deleteOriginal().queue(unused -> {
-          hook.sendMessage("Não foi possivel obter um gif, tente novamente mais tarde!")
-              .setEphemeral(true)
-              .queue();
+          hook.sendMessage("Não foi possivel obter um gif, tente novamente mais tarde!").setEphemeral(true).queue();
         });
         return;
       }
@@ -131,8 +124,8 @@ public class RoleplayCommands extends SlashCommand {
       embed.setTitle(String.format(description, sender.getAsMention(), receiver.getAsMention()));
       embed.setImage(kissGif.getUrl());
 
-      Button button = Button.primary("roleplay:kiss:button", "Retribuir")
-                          .withDisabled(sender.getIdLong() == receiver.getIdLong());
+      Button button =
+          Button.primary("roleplay:kiss:button", "Retribuir").withDisabled(sender.getIdLong() == receiver.getIdLong());
 
       Message message = hook.editOriginalEmbeds(embed.build()).setActionRow(button).complete();
 
@@ -158,8 +151,7 @@ public class RoleplayCommands extends SlashCommand {
     PunchCommand() {
       super("socar", "Socar um usuário");
 
-      setOptions(
-          new OptionData(OptionType.USER, "usuário", "Usuário que deseja socar", true, false));
+      setOptions(new OptionData(OptionType.USER, "usuário", "Usuário que deseja socar", true, false));
     }
 
     @Override
@@ -167,9 +159,7 @@ public class RoleplayCommands extends SlashCommand {
       OtakusGifAPI punchGif = OtakusGifAPI.get("punch");
       if (punchGif == null) {
         hook.deleteOriginal().queue(unused -> {
-          hook.sendMessage("Não foi possivel obter um gif, tente novamente mais tarde!")
-              .setEphemeral(true)
-              .queue();
+          hook.sendMessage("Não foi possivel obter um gif, tente novamente mais tarde!").setEphemeral(true).queue();
         });
         return;
       }
@@ -187,8 +177,8 @@ public class RoleplayCommands extends SlashCommand {
       embed.setTitle(String.format(description, sender.getAsMention(), receiver.getAsMention()));
       embed.setImage(punchGif.getUrl());
 
-      Button button = Button.primary("roleplay:punch:button", "Retribuir")
-                          .withDisabled(sender.getIdLong() == receiver.getIdLong());
+      Button button =
+          Button.primary("roleplay:punch:button", "Retribuir").withDisabled(sender.getIdLong() == receiver.getIdLong());
 
       Message message = hook.editOriginalEmbeds(embed.build()).setActionRow(button).complete();
 

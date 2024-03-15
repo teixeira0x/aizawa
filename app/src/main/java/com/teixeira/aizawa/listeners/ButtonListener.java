@@ -14,12 +14,10 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 public class ButtonListener extends ListenerAdapter {
-
   private static final Logger LOG = LoggerFactory.getLogger(ButtonListener.class);
 
   private static final Map<Long, ScheduledButtonAction> ACTIONS = new ConcurrentHashMap<>();
-  private static final ScheduledExecutorService scheduledExecutor =
-      Executors.newScheduledThreadPool(3);
+  private static final ScheduledExecutorService scheduledExecutor = Executors.newScheduledThreadPool(3);
 
   public static void createButtonAction(long messageId, ButtonAction action) {
     ACTIONS.put(messageId, new ScheduledButtonAction(null, action));
@@ -39,7 +37,6 @@ public class ButtonListener extends ListenerAdapter {
 
   @Override
   public void onButtonInteraction(ButtonInteractionEvent event) {
-
     long messageId = event.getMessageIdLong();
 
     ScheduledButtonAction scheduledAction = ACTIONS.get(messageId);
@@ -49,7 +46,6 @@ public class ButtonListener extends ListenerAdapter {
       LOG.info("ButtonAction: " + messageId + " executed!");
 
       if (result == ActionResult.COMPLETED) {
-
         if (scheduledAction.future != null) {
           scheduledAction.future.cancel(true);
         }

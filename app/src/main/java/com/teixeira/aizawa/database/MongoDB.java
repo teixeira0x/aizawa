@@ -16,11 +16,11 @@ import org.bson.codecs.configuration.CodecRegistry;
 import org.bson.codecs.pojo.PojoCodecProvider;
 
 public class MongoDB {
-
   private static MongoDB sInstance;
 
   public static MongoDB getInstance() {
-    if (sInstance == null) sInstance = new MongoDB();
+    if (sInstance == null)
+      sInstance = new MongoDB();
     return sInstance;
   }
 
@@ -37,13 +37,10 @@ public class MongoDB {
   }
 
   private MongoClientSettings getSettings() {
-    ConnectionString connectionString =
-        new ConnectionString(Aizawa.getInstance().getEnv("MONGO_URI"));
+    ConnectionString connectionString = new ConnectionString(Aizawa.getInstance().getEnv("MONGO_URI"));
 
-    CodecRegistry pojoCodecRegistry =
-        fromRegistries(
-            MongoClientSettings.getDefaultCodecRegistry(),
-            fromProviders(PojoCodecProvider.builder().automatic(true).build()));
+    CodecRegistry pojoCodecRegistry = fromRegistries(MongoClientSettings.getDefaultCodecRegistry(),
+        fromProviders(PojoCodecProvider.builder().automatic(true).build()));
 
     return MongoClientSettings.builder()
         .codecRegistry(pojoCodecRegistry)

@@ -6,7 +6,6 @@ import java.math.BigDecimal;
 import net.dv8tion.jda.api.entities.User;
 
 public class UserController {
-
   public static UserModel findOrInsertUser(User discordUser) {
     long userId = discordUser.getIdLong();
 

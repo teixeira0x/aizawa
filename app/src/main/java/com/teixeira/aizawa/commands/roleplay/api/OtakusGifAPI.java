@@ -4,12 +4,10 @@ import com.teixeira.aizawa.utils.RequestUtils;
 import java.io.IOException;
 
 public class OtakusGifAPI {
-
   public static OtakusGifAPI get(String reaction) {
     try {
       return RequestUtils.get(
-          OtakusGifAPI.class,
-          String.format("https://api.otakugifs.xyz/gif?reaction=%s&format=gif", reaction));
+          OtakusGifAPI.class, String.format("https://api.otakugifs.xyz/gif?reaction=%s&format=gif", reaction));
     } catch (IOException e) {
       e.printStackTrace();
     }

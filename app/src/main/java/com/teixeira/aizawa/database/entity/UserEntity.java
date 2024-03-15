@@ -4,7 +4,6 @@ import java.math.BigDecimal;
 import org.bson.types.ObjectId;
 
 public class UserEntity {
-
   private ObjectId id;
   private long userId;
   private BigDecimal balance;

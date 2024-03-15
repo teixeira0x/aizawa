@@ -7,7 +7,6 @@ import java.util.List;
 import java.util.Optional;
 
 public interface UserRepository {
-
   public static UserRepository getInstance() {
     return UserRepositoryImpl.getInstance();
   }

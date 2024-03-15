@@ -12,11 +12,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class UserRepositoryImpl implements UserRepository {
-
   private static UserRepository sInstance;
 
   public static UserRepository getInstance() {
-    if (sInstance == null) sInstance = new UserRepositoryImpl();
+    if (sInstance == null)
+      sInstance = new UserRepositoryImpl();
     return sInstance;
   }
 
@@ -30,12 +30,7 @@ public class UserRepositoryImpl implements UserRepository {
   public List<UserModel> getAll() {
     List<UserModel> allUsers = new ArrayList<>();
     try {
-      collection
-          .find()
-          .forEach(
-              userEntity -> {
-                allUsers.add(entityToModel(userEntity));
-              });
+      collection.find().forEach(userEntity -> { allUsers.add(entityToModel(userEntity)); });
     } catch (MongoException e) {
       e.printStackTrace();
     }

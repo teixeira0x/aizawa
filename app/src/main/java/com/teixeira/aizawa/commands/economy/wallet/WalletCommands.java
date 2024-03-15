@@ -9,7 +9,6 @@ import net.dv8tion.jda.api.entities.User;
 import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
 
 public class WalletCommands extends SlashCommand {
-
   public WalletCommands() {
     super("carteira", "Comandos relacionados a carteira");
 
@@ -21,14 +20,12 @@ public class WalletCommands extends SlashCommand {
   public void execute(SlashCommandInteractionEvent event) {}
 
   private class SeeWalletCommand extends SlashCommand {
-
     SeeWalletCommand() {
       super("ver", "Ver sua carteira ou de algum outro usuário");
     }
 
     @Override
     public void execute(SlashCommandInteractionEvent event) {
-
       event.deferReply().queue();
 
       User user = event.getUser();

@@ -9,7 +9,6 @@ import java.util.Random;
  * @author Felipe Teixeira.
  */
 public class RandomUtils {
-
   /** The random instance */
   private static final Random random = new Random();
 

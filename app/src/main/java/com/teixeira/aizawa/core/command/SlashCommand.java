@@ -8,7 +8,6 @@ import net.dv8tion.jda.api.interactions.commands.build.OptionData;
 import net.dv8tion.jda.api.interactions.commands.build.SubcommandData;
 
 public abstract class SlashCommand {
-
   private OptionData[] options = new OptionData[0];
   private SlashCommand[] subcommands = new SlashCommand[0];
 
@@ -30,9 +29,7 @@ public abstract class SlashCommand {
 
     for (int i = 0; i < subcommands.length; i++) {
       SlashCommand subcommand = subcommands[i];
-      subcommandDataArr[i] =
-          new SubcommandData(subcommand.name, subcommand.description)
-              .addOptions(subcommand.options);
+      subcommandDataArr[i] = new SubcommandData(subcommand.name, subcommand.description).addOptions(subcommand.options);
     }
 
     return Commands.slash(name, description)
