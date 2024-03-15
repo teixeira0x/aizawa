@@ -7,13 +7,18 @@ public class UserEntity {
   private ObjectId id;
   private long userId;
   private BigDecimal balance;
+  private BigDecimal bankBalance;
 
-  public UserEntity(long userId, BigDecimal balance) {
+  public UserEntity(long userId, BigDecimal balance, BigDecimal bankBalance) {
     this.userId = userId;
     this.balance = balance;
+    this.bankBalance = bankBalance;
   }
 
-  public UserEntity() {}
+  public UserEntity() {
+    balance = BigDecimal.valueOf(0);
+    bankBalance = BigDecimal.valueOf(0);
+  }
 
   public ObjectId getId() {
     return this.id;
@@ -37,5 +42,13 @@ public class UserEntity {
 
   public void setBalance(BigDecimal balance) {
     this.balance = balance;
+  }
+
+  public BigDecimal getBankBalance() {
+    return this.bankBalance;
+  }
+
+  public void setBankBalance(BigDecimal bankBalance) {
+    this.bankBalance = bankBalance;
   }
 }

@@ -73,14 +73,14 @@ public class UserRepositoryImpl implements UserRepository {
 
   private UserEntity modelToEntity(UserModel user) {
     if (user != null) {
-      return new UserEntity(user.id(), user.balance());
+      return new UserEntity(user.id(), user.balance(), user.bankBalance());
     }
     return null;
   }
 
   private UserModel entityToModel(UserEntity user) {
     if (user != null) {
-      return new UserModel(user.getUserId(), user.getBalance());
+      return new UserModel(user.getUserId(), user.getBalance(), user.getBankBalance());
     }
     return null;
   }

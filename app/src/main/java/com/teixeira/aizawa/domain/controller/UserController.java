@@ -12,7 +12,7 @@ public class UserController {
     UserRepository repository = UserRepository.getInstance();
     UserModel userModel = repository.findUser(userId);
     if (userModel == null) {
-      userModel = new UserModel(userId, BigDecimal.valueOf(0));
+      userModel = new UserModel(userId, BigDecimal.valueOf(0), BigDecimal.valueOf(0));
       repository.insertUser(userModel);
     }
 
