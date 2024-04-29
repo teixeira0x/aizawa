@@ -21,4 +21,8 @@ public class UserController {
 
     return userEntity;
   }
+
+  public static void updateUser(UserEntity userEntity) {
+    MongoDB.getInstance().getUserCollection().updateUser(userEntity.getUserId(), userEntity);
+  }
 }

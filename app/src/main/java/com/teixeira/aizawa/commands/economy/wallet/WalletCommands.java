@@ -23,7 +23,7 @@ public class WalletCommands extends SlashCommand {
   public WalletCommands() {
     super("carteira", "Comandos relacionados a carteira");
 
-    setSubcommands(new SeeWalletCommand());
+    setSubcommands(new SeeWalletCommand(), new DepositCommand(), new WithdrawCommand());
     setGuildOnly(true);
   }
 
@@ -87,6 +87,130 @@ public class WalletCommands extends SlashCommand {
       embed.addField("Seu saldo:", "$" + BalanceUtils.formatBalance(balance), false);
       embed.addField("Saldo bancário:", "$" + BalanceUtils.formatBalance(bankBalance), false);
       embed.addField("Saldo total:", "$" + BalanceUtils.formatBalance(totalBalance), false);
+    }
+  }
+
+  private class DepositCommand extends SlashCommand {
+    DepositCommand() {
+      super("depositar", "Depositar um saldo");
+
+      setOptions(new OptionData(OptionType.STRING, "quantia", "Quantidade que você deseja depositar", true, false));
+    }
+
+    @Override
+    public void execute(SlashCommandInteractionEvent event) {
+      event.deferReply(false).queue();
+
+      String amount = event.getOption("quantia").getAsString();
+
+      User user = event.getUser();
+      UserEntity userEntity = UserController.findOrInsertUser(user);
+      BigDecimal userBalance = userEntity.getBalance();
+      BigDecimal bankBalance = userEntity.getBankBalance();
+
+      String formattedAmount;
+      if (amount.equals("tudo") || amount.equals("all")) {
+        userEntity.setBankBalance(bankBalance.add(userBalance));
+        userEntity.setBalance(BigDecimal.valueOf(0));
+
+        formattedAmount = BalanceUtils.formatBalance(userBalance);
+      } else {
+        int amountInt = -1;
+        try {
+          amountInt = Integer.parseInt(amount);
+        } catch (Exception e) {
+          // Ignore
+        }
+
+        if (amountInt > userBalance.intValue() || amountInt <= 0) {
+          event.getHook().deleteOriginal().queue(unused -> {
+            event.getHook()
+                .sendMessage("Este valor é invalido, por favor digite outro valor e tente novamente.")
+                .setEphemeral(true)
+                .queue();
+          });
+
+          return;
+        }
+
+        userEntity.setBankBalance(bankBalance.add(BigDecimal.valueOf(amountInt)));
+        userEntity.setBalance(BigDecimal.valueOf(userBalance.intValue() - amountInt));
+        formattedAmount = BalanceUtils.formatBalance(amountInt);
+      }
+
+      UserController.updateUser(userEntity);
+
+      EmbedBuilder embed = new EmbedBuilder();
+      embed.setColor(Color.decode("#0d7a13"));
+      embed.setAuthor(user.getName(), null, user.getAvatarUrl());
+      embed.setThumbnail(user.getAvatarUrl());
+      embed.setTimestamp(event.getTimeCreated());
+
+      embed.addField("Você depositou:", "$" + formattedAmount, false);
+
+      event.getHook().editOriginalEmbeds(embed.build()).queue();
+    }
+  }
+
+  private class WithdrawCommand extends SlashCommand {
+    WithdrawCommand() {
+      super("sacar", "Sacar um saldo");
+
+      setOptions(new OptionData(OptionType.STRING, "quantia", "Quantidade que você deseja sacar", true, false));
+    }
+
+    @Override
+    public void execute(SlashCommandInteractionEvent event) {
+      event.deferReply(false).queue();
+
+      String amount = event.getOption("quantia").getAsString();
+
+      User user = event.getUser();
+      UserEntity userEntity = UserController.findOrInsertUser(user);
+      BigDecimal userBalance = userEntity.getBalance();
+      BigDecimal bankBalance = userEntity.getBankBalance();
+
+      String formattedAmount;
+      if (amount.equals("tudo") || amount.equals("all")) {
+        userEntity.setBankBalance(BigDecimal.valueOf(0));
+        userEntity.setBalance(userBalance.add(bankBalance));
+
+        formattedAmount = BalanceUtils.formatBalance(bankBalance);
+      } else {
+        int amountInt = -1;
+        try {
+          amountInt = Integer.parseInt(amount);
+        } catch (Exception e) {
+          // Ignore
+        }
+
+        if (amountInt > bankBalance.intValue() || amountInt <= 0) {
+          event.getHook().deleteOriginal().queue(unused -> {
+            event.getHook()
+                .sendMessage("Este valor é invalido, por favor digite outro valor e tente novamente.")
+                .setEphemeral(true)
+                .queue();
+          });
+
+          return;
+        }
+
+        userEntity.setBankBalance(BigDecimal.valueOf(bankBalance.intValue() - amountInt));
+        userEntity.setBalance(userBalance.add(BigDecimal.valueOf(amountInt)));
+        formattedAmount = BalanceUtils.formatBalance(amountInt);
+      }
+
+      UserController.updateUser(userEntity);
+
+      EmbedBuilder embed = new EmbedBuilder();
+      embed.setColor(Color.decode("#0d7a13"));
+      embed.setAuthor(user.getName(), null, user.getAvatarUrl());
+      embed.setThumbnail(user.getAvatarUrl());
+      embed.setTimestamp(event.getTimeCreated());
+
+      embed.addField("Você sacou:", "$" + formattedAmount, false);
+
+      event.getHook().editOriginalEmbeds(embed.build()).queue();
     }
   }
 }
