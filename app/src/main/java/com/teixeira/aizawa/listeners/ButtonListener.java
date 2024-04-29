@@ -8,16 +8,18 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.TimeUnit;
+import net.dv8tion.jda.api.events.GenericEvent;
 import net.dv8tion.jda.api.events.interaction.component.ButtonInteractionEvent;
-import net.dv8tion.jda.api.hooks.ListenerAdapter;
+import net.dv8tion.jda.api.hooks.EventListener;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class ButtonListener extends ListenerAdapter {
+public class ButtonListener implements EventListener {
   private static final Logger LOG = LoggerFactory.getLogger(ButtonListener.class);
 
   private static final Map<Long, ScheduledButtonAction> ACTIONS = new ConcurrentHashMap<>();
-  private static final ScheduledExecutorService scheduledExecutor = Executors.newScheduledThreadPool(3);
+  private static final ScheduledExecutorService scheduledExecutor =
+      Executors.newScheduledThreadPool(3);
 
   public static void createButtonAction(long messageId, ButtonAction action) {
     ACTIONS.put(messageId, new ScheduledButtonAction(null, action));
@@ -36,6 +38,12 @@ public class ButtonListener extends ListenerAdapter {
   }
 
   @Override
+  public void onEvent(GenericEvent event) {
+    if (event instanceof ButtonInteractionEvent buttonInteractionEvent) {
+      onButtonInteraction(buttonInteractionEvent);
+    }
+  }
+
   public void onButtonInteraction(ButtonInteractionEvent event) {
     long messageId = event.getMessageIdLong();
 
@@ -61,8 +69,8 @@ public class ButtonListener extends ListenerAdapter {
   }
 
   static class ScheduledButtonAction {
-    private ScheduledFuture<?> future;
-    private ButtonAction action;
+    private final ScheduledFuture<?> future;
+    private final ButtonAction action;
 
     public ScheduledButtonAction(ScheduledFuture<?> future, ButtonAction action) {
       this.future = future;

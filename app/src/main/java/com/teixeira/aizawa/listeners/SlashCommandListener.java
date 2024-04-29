@@ -6,41 +6,26 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import net.dv8tion.jda.api.JDA;
+import net.dv8tion.jda.api.events.GenericEvent;
 import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
-import net.dv8tion.jda.api.events.interaction.component.ButtonInteractionEvent;
 import net.dv8tion.jda.api.events.session.ReadyEvent;
-import net.dv8tion.jda.api.hooks.ListenerAdapter;
+import net.dv8tion.jda.api.hooks.EventListener;
 import net.dv8tion.jda.api.interactions.commands.build.CommandData;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class SlashCommandListener extends ListenerAdapter {
+public class SlashCommandListener implements EventListener {
   private static final Logger LOG = LoggerFactory.getLogger("SlashCommandListener");
 
   private final Map<String, Integer> slashCommandsIndex = new HashMap<>();
   private final List<SlashCommand> slashCommands = new ArrayList<>();
 
   @Override
-  public void onReady(ReadyEvent event) {
-    JDA jda = event.getJDA();
-
-    List<CommandData> commands = new ArrayList<>();
-    for (SlashCommand command : slashCommands) {
-      if (command.isSubcommand()) {
-        continue;
-      }
-      commands.add(command.toCommandData());
-    }
-    jda.updateCommands().addCommands(commands).queue();
-  }
-
-  @Override
-  public void onSlashCommandInteraction(SlashCommandInteractionEvent event) {
-    SlashCommand command = findSlashCommand(event.getFullCommandName());
-    if (command != null) {
-      command.execute(event);
-
-      LOG.info("Command: " + event.getFullCommandName() + " executed!");
+  public void onEvent(GenericEvent event) {
+    if (event instanceof ReadyEvent readyEvent) {
+      onReady(readyEvent);
+    } else if (event instanceof SlashCommandInteractionEvent slashCommandInteractionEvent) {
+      onSlashCommandInteraction(slashCommandInteractionEvent);
     }
   }
 
@@ -58,6 +43,28 @@ public class SlashCommandListener extends ListenerAdapter {
 
     for (SlashCommand subcommand : command.getSubcommands()) {
       addCommand(commandName + " " + subcommand.getName(), subcommand);
+    }
+  }
+
+  private void onReady(ReadyEvent event) {
+    JDA jda = event.getJDA();
+
+    List<CommandData> commands = new ArrayList<>();
+    for (SlashCommand command : slashCommands) {
+      if (command.isSubcommand()) {
+        continue;
+      }
+      commands.add(command.toCommandData());
+    }
+    jda.updateCommands().addCommands(commands).queue();
+  }
+
+  private void onSlashCommandInteraction(SlashCommandInteractionEvent event) {
+    SlashCommand command = findSlashCommand(event.getFullCommandName());
+    if (command != null) {
+      command.execute(event);
+
+      LOG.info("Command: " + event.getFullCommandName() + " executed!");
     }
   }
 
