@@ -11,6 +11,7 @@ import com.mongodb.client.MongoClients;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoDatabase;
 import com.teixeira.aizawa.Aizawa;
+import com.teixeira.aizawa.database.collections.UserCollection;
 import com.teixeira.aizawa.database.entity.UserEntity;
 import org.bson.codecs.configuration.CodecRegistry;
 import org.bson.codecs.pojo.PojoCodecProvider;
@@ -26,11 +27,13 @@ public class MongoDB {
 
   private MongoClient mongoClient;
   private MongoDatabase database;
+  private UserCollection userCollection;
 
   private MongoDB() {
     try {
       mongoClient = MongoClients.create(getSettings());
       database = mongoClient.getDatabase("aizawa");
+      userCollection = new UserCollection(database.getCollection("users", UserEntity.class));
     } catch (MongoException e) {
       throw new RuntimeException("An error occurred when trying to connect to MongoDB", e);
     }
@@ -48,7 +51,7 @@ public class MongoDB {
         .build();
   }
 
-  public MongoCollection<UserEntity> getUserCollection() {
-    return database.getCollection("users", UserEntity.class);
+  public UserCollection getUserCollection() {
+    return this.userCollection;
   }
 }

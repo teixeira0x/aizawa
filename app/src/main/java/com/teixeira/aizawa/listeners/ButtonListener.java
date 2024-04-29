@@ -18,8 +18,7 @@ public class ButtonListener implements EventListener {
   private static final Logger LOG = LoggerFactory.getLogger(ButtonListener.class);
 
   private static final Map<Long, ScheduledButtonAction> ACTIONS = new ConcurrentHashMap<>();
-  private static final ScheduledExecutorService scheduledExecutor =
-      Executors.newScheduledThreadPool(3);
+  private static final ScheduledExecutorService scheduledExecutor = Executors.newScheduledThreadPool(3);
 
   public static void createButtonAction(long messageId, ButtonAction action) {
     ACTIONS.put(messageId, new ScheduledButtonAction(null, action));

@@ -1,9 +1,9 @@
 package com.teixeira.aizawa.commands.economy.wallet;
 
+import com.teixeira.aizawa.controllers.UserController;
 import com.teixeira.aizawa.core.action.ActionResult;
 import com.teixeira.aizawa.core.command.SlashCommand;
-import com.teixeira.aizawa.domain.controller.UserController;
-import com.teixeira.aizawa.domain.model.UserModel;
+import com.teixeira.aizawa.database.entity.UserEntity;
 import com.teixeira.aizawa.listeners.ButtonListener;
 import com.teixeira.aizawa.utils.BalanceUtils;
 import java.awt.Color;
@@ -50,7 +50,7 @@ public class WalletCommands extends SlashCommand {
       event.deferReply(false).queue();
       InteractionHook hook = event.getHook();
 
-      UserModel userModel = UserController.findOrInsertUser(user);
+      UserEntity userEntity = UserController.findOrInsertUser(user);
 
       EmbedBuilder embed = new EmbedBuilder();
       embed.setColor(Color.decode("#0d7a13"));
@@ -58,7 +58,7 @@ public class WalletCommands extends SlashCommand {
       embed.setThumbnail(user.getAvatarUrl());
       embed.setTimestamp(event.getTimeCreated());
 
-      setBalanceEmbedFields(embed, userModel);
+      setBalanceEmbedFields(embed, userEntity);
 
       Button button = Button.primary("economy:wallet:button", "Atualizar").withEmoji(Emoji.fromUnicode("🔄"));
 
@@ -78,9 +78,9 @@ public class WalletCommands extends SlashCommand {
       });
     }
 
-    private void setBalanceEmbedFields(EmbedBuilder embed, UserModel userModel) {
-      BigDecimal balance = userModel.balance();
-      BigDecimal bankBalance = userModel.bankBalance();
+    private void setBalanceEmbedFields(EmbedBuilder embed, UserEntity userEntity) {
+      BigDecimal balance = userEntity.getBalance();
+      BigDecimal bankBalance = userEntity.getBankBalance();
       BigDecimal totalBalance = balance.add(bankBalance);
 
       embed.clearFields();
