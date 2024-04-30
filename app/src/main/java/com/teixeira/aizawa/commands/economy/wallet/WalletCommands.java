@@ -117,7 +117,7 @@ public class WalletCommands extends SlashCommand {
 
       int amountInt = -1;
       if (amount.equals("tudo") || amount.equals("all")) {
-        amountInt = bankBalance.add(userBalance).intValue();
+        amountInt = userBalance.intValue();
       } else {
         try {
           amountInt = Integer.parseInt(amount);
@@ -187,7 +187,7 @@ public class WalletCommands extends SlashCommand {
 
       int amountInt = -1;
       if (amount.equals("tudo") || amount.equals("all")) {
-        amountInt = userBalance.add(bankBalance).intValue();
+        amountInt = bankBalance.intValue();
       } else {
         try {
           amountInt = Integer.parseInt(amount);
@@ -207,8 +207,8 @@ public class WalletCommands extends SlashCommand {
         return;
       }
 
-      userEntity.setBankBalance(BigDecimal.valueOf(0));
-      userEntity.setBalance(BigDecimal.valueOf(amountInt));
+      userEntity.setBankBalance(BigDecimal.valueOf(bankBalance.intValue() - amountInt));
+      userEntity.setBalance(userBalance.add(BigDecimal.valueOf(amountInt)));
 
       UserController.updateUser(userEntity);
 
