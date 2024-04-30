@@ -8,6 +8,7 @@ import com.teixeira.aizawa.listeners.ButtonListener;
 import com.teixeira.aizawa.utils.BalanceUtils;
 import java.awt.Color;
 import java.math.BigDecimal;
+import java.time.OffsetDateTime;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.entities.Message;
 import net.dv8tion.jda.api.entities.User;
@@ -20,10 +21,13 @@ import net.dv8tion.jda.api.interactions.commands.build.OptionData;
 import net.dv8tion.jda.api.interactions.components.buttons.Button;
 
 public class WalletCommands extends SlashCommand {
+  private final SeeWalletCommand seeWalletCommand;
+
   public WalletCommands() {
     super("carteira", "Comandos relacionados a carteira");
 
-    setSubcommands(new SeeWalletCommand(), new DepositCommand(), new WithdrawCommand());
+    seeWalletCommand = new SeeWalletCommand();
+    setSubcommands(seeWalletCommand, new DepositCommand(), new WithdrawCommand());
     setGuildOnly(true);
   }
 
@@ -49,23 +53,26 @@ public class WalletCommands extends SlashCommand {
 
       event.deferReply(false).queue();
       InteractionHook hook = event.getHook();
+      execute(hook, user, event.getTimeCreated());
+    }
 
+    private void execute(InteractionHook hook, User user, OffsetDateTime timestamp) {
       UserEntity userEntity = UserController.findOrInsertUser(user);
 
       EmbedBuilder embed = new EmbedBuilder();
       embed.setColor(Color.decode("#0d7a13"));
       embed.setAuthor(user.getName(), null, user.getAvatarUrl());
       embed.setThumbnail(user.getAvatarUrl());
-      embed.setTimestamp(event.getTimeCreated());
+      embed.setTimestamp(timestamp);
 
       setBalanceEmbedFields(embed, userEntity);
 
       Button button = Button.primary("economy:wallet:button", "Atualizar").withEmoji(Emoji.fromUnicode("🔄"));
 
-      Message message = hook.editOriginalEmbeds(embed.build()).setActionRow(button).complete();
+      Message message = hook.sendMessageEmbeds(embed.build()).setActionRow(button).complete();
 
       ButtonListener.createButtonAction(message.getIdLong(), 30L, buttonEvent -> {
-        if (buttonEvent.getUser().getIdLong() != event.getUser().getIdLong()) {
+        if (buttonEvent.getUser().getIdLong() != user.getIdLong()) {
           buttonEvent.reply("Você não pode ultilizar está interação").setEphemeral(true).queue();
           return ActionResult.IGNORED;
         }
@@ -73,7 +80,7 @@ public class WalletCommands extends SlashCommand {
         buttonEvent.deferEdit().queue();
 
         setBalanceEmbedFields(embed, UserController.findOrInsertUser(user));
-        hook.editOriginalEmbeds(embed.build()).queue();
+        buttonEvent.getHook().editOriginalEmbeds(embed.build()).queue();
         return ActionResult.IGNORED;
       });
     }
@@ -108,35 +115,30 @@ public class WalletCommands extends SlashCommand {
       BigDecimal userBalance = userEntity.getBalance();
       BigDecimal bankBalance = userEntity.getBankBalance();
 
-      String formattedAmount;
+      int amountInt = -1;
       if (amount.equals("tudo") || amount.equals("all")) {
-        userEntity.setBankBalance(bankBalance.add(userBalance));
-        userEntity.setBalance(BigDecimal.valueOf(0));
-
-        formattedAmount = BalanceUtils.formatBalance(userBalance);
+        amountInt = bankBalance.add(userBalance).intValue();
       } else {
-        int amountInt = -1;
         try {
           amountInt = Integer.parseInt(amount);
         } catch (Exception e) {
           // Ignore
         }
-
-        if (amountInt > userBalance.intValue() || amountInt <= 0) {
-          event.getHook().deleteOriginal().queue(unused -> {
-            event.getHook()
-                .sendMessage("Este valor é invalido, por favor digite outro valor e tente novamente.")
-                .setEphemeral(true)
-                .queue();
-          });
-
-          return;
-        }
-
-        userEntity.setBankBalance(bankBalance.add(BigDecimal.valueOf(amountInt)));
-        userEntity.setBalance(BigDecimal.valueOf(userBalance.intValue() - amountInt));
-        formattedAmount = BalanceUtils.formatBalance(amountInt);
       }
+
+      if (amountInt > userBalance.intValue() || amountInt <= 0) {
+        event.getHook().deleteOriginal().queue(unused -> {
+          event.getHook()
+              .sendMessage("Este valor é invalido, por favor digite outro valor e tente novamente.")
+              .setEphemeral(true)
+              .queue();
+        });
+
+        return;
+      }
+
+      userEntity.setBankBalance(bankBalance.add(BigDecimal.valueOf(amountInt)));
+      userEntity.setBalance(BigDecimal.valueOf(userBalance.intValue() - amountInt));
 
       UserController.updateUser(userEntity);
 
@@ -146,9 +148,22 @@ public class WalletCommands extends SlashCommand {
       embed.setThumbnail(user.getAvatarUrl());
       embed.setTimestamp(event.getTimeCreated());
 
-      embed.addField("Você depositou:", "$" + formattedAmount, false);
+      embed.addField("Você depositou:", "$" + BalanceUtils.formatBalance(amountInt), false);
 
-      event.getHook().editOriginalEmbeds(embed.build()).queue();
+      Button button = Button.primary("economy:deposit:button", "Carteira").withEmoji(Emoji.fromUnicode("💰"));
+
+      Message message = event.getHook().editOriginalEmbeds(embed.build()).setActionRow(button).complete();
+
+      ButtonListener.createButtonAction(message.getIdLong(), 30L, buttonEvent -> {
+        if (buttonEvent.getUser().getIdLong() != user.getIdLong()) {
+          buttonEvent.reply("Você não pode ultilizar está interação").setEphemeral(true).queue();
+          return ActionResult.IGNORED;
+        }
+
+        buttonEvent.deferEdit().queue();
+        seeWalletCommand.execute(buttonEvent.getHook(), buttonEvent.getUser(), buttonEvent.getTimeCreated());
+        return ActionResult.COMPLETED;
+      });
     }
   }
 
@@ -170,35 +185,30 @@ public class WalletCommands extends SlashCommand {
       BigDecimal userBalance = userEntity.getBalance();
       BigDecimal bankBalance = userEntity.getBankBalance();
 
-      String formattedAmount;
+      int amountInt = -1;
       if (amount.equals("tudo") || amount.equals("all")) {
-        userEntity.setBankBalance(BigDecimal.valueOf(0));
-        userEntity.setBalance(userBalance.add(bankBalance));
-
-        formattedAmount = BalanceUtils.formatBalance(bankBalance);
+        amountInt = userBalance.add(bankBalance).intValue();
       } else {
-        int amountInt = -1;
         try {
           amountInt = Integer.parseInt(amount);
         } catch (Exception e) {
           // Ignore
         }
-
-        if (amountInt > bankBalance.intValue() || amountInt <= 0) {
-          event.getHook().deleteOriginal().queue(unused -> {
-            event.getHook()
-                .sendMessage("Este valor é invalido, por favor digite outro valor e tente novamente.")
-                .setEphemeral(true)
-                .queue();
-          });
-
-          return;
-        }
-
-        userEntity.setBankBalance(BigDecimal.valueOf(bankBalance.intValue() - amountInt));
-        userEntity.setBalance(userBalance.add(BigDecimal.valueOf(amountInt)));
-        formattedAmount = BalanceUtils.formatBalance(amountInt);
       }
+
+      if (amountInt > bankBalance.intValue() || amountInt <= 0) {
+        event.getHook().deleteOriginal().queue(unused -> {
+          event.getHook()
+              .sendMessage("Este valor é invalido, por favor digite outro valor e tente novamente.")
+              .setEphemeral(true)
+              .queue();
+        });
+
+        return;
+      }
+
+      userEntity.setBankBalance(BigDecimal.valueOf(0));
+      userEntity.setBalance(BigDecimal.valueOf(amountInt));
 
       UserController.updateUser(userEntity);
 
@@ -208,9 +218,22 @@ public class WalletCommands extends SlashCommand {
       embed.setThumbnail(user.getAvatarUrl());
       embed.setTimestamp(event.getTimeCreated());
 
-      embed.addField("Você sacou:", "$" + formattedAmount, false);
+      embed.addField("Você sacou:", "$" + BalanceUtils.formatBalance(amountInt), false);
 
-      event.getHook().editOriginalEmbeds(embed.build()).queue();
+      Button button = Button.primary("economy:withdraw:button", "Carteira").withEmoji(Emoji.fromUnicode("💰"));
+
+      Message message = event.getHook().editOriginalEmbeds(embed.build()).setActionRow(button).complete();
+
+      ButtonListener.createButtonAction(message.getIdLong(), 30L, buttonEvent -> {
+        if (buttonEvent.getUser().getIdLong() != user.getIdLong()) {
+          buttonEvent.reply("Você não pode ultilizar está interação").setEphemeral(true).queue();
+          return ActionResult.IGNORED;
+        }
+
+        buttonEvent.deferEdit().queue();
+        seeWalletCommand.execute(buttonEvent.getHook(), buttonEvent.getUser(), buttonEvent.getTimeCreated());
+        return ActionResult.COMPLETED;
+      });
     }
   }
 }
