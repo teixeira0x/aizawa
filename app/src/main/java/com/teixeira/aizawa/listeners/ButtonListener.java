@@ -1,5 +1,6 @@
 package com.teixeira.aizawa.listeners;
 
+import com.teixeira.aizawa.core.action.Action;
 import com.teixeira.aizawa.core.action.ActionResult;
 import com.teixeira.aizawa.core.action.ButtonAction;
 import java.util.Map;
@@ -20,11 +21,11 @@ public class ButtonListener implements EventListener {
   private static final Map<Long, ScheduledButtonAction> ACTIONS = new ConcurrentHashMap<>();
   private static final ScheduledExecutorService scheduledExecutor = Executors.newScheduledThreadPool(3);
 
-  public static void createButtonAction(long messageId, ButtonAction action) {
+  public static void createButtonAction(long messageId, Action<ButtonInteractionEvent> action) {
     ACTIONS.put(messageId, new ScheduledButtonAction(null, action));
   }
 
-  public static void createButtonAction(long messageId, long timeoutSeconds, ButtonAction action) {
+  public static void createButtonAction(long messageId, long timeoutSeconds, Action<ButtonInteractionEvent> action) {
     ScheduledFuture<?> future =
         scheduledExecutor.schedule(() -> removeAction(messageId), timeoutSeconds, TimeUnit.SECONDS);
 
@@ -69,9 +70,9 @@ public class ButtonListener implements EventListener {
 
   static class ScheduledButtonAction {
     private final ScheduledFuture<?> future;
-    private final ButtonAction action;
+    private final Action<ButtonInteractionEvent> action;
 
-    public ScheduledButtonAction(ScheduledFuture<?> future, ButtonAction action) {
+    public ScheduledButtonAction(ScheduledFuture<?> future, Action<ButtonInteractionEvent> action) {
       this.future = future;
       this.action = action;
     }
@@ -80,7 +81,7 @@ public class ButtonListener implements EventListener {
       return this.future;
     }
 
-    public ButtonAction getAction() {
+    public Action getAction() {
       return this.action;
     }
   }
