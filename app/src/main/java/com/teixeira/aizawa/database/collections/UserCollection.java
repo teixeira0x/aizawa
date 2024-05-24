@@ -6,18 +6,20 @@ import com.mongodb.client.model.Filters;
 import com.mongodb.client.result.DeleteResult;
 import com.mongodb.client.result.InsertOneResult;
 import com.mongodb.client.result.UpdateResult;
+import com.teixeira.aizawa.core.database.collections.IUserCollection;
 import com.teixeira.aizawa.database.entity.UserEntity;
 import java.util.ArrayList;
 import java.util.List;
 import org.bson.Document;
 
-public class UserCollection {
+public class UserCollection implements IUserCollection {
   private final MongoCollection<UserEntity> collection;
 
   public UserCollection(MongoCollection<UserEntity> collection) {
     this.collection = collection;
   }
 
+  @Override
   public List<UserEntity> getAll() {
     List<UserEntity> allUsers = new ArrayList<>();
     try {
@@ -28,6 +30,7 @@ public class UserCollection {
     return allUsers;
   }
 
+  @Override
   public InsertOneResult insertUser(UserEntity userEntity) {
     InsertOneResult result = InsertOneResult.unacknowledged();
     try {
@@ -38,6 +41,7 @@ public class UserCollection {
     return result;
   }
 
+  @Override
   public UpdateResult updateUser(long userId, UserEntity newUser) {
     UpdateResult result = UpdateResult.unacknowledged();
     try {
@@ -48,6 +52,7 @@ public class UserCollection {
     return result;
   }
 
+  @Override
   public UserEntity findUser(long userId) {
     try {
       return collection.find(Filters.eq("userId", userId)).first();
@@ -57,6 +62,7 @@ public class UserCollection {
     return null;
   }
 
+  @Override
   public DeleteResult removeUser(long userId) {
     DeleteResult result = DeleteResult.unacknowledged();
     try {
