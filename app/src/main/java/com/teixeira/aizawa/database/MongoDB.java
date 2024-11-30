@@ -8,7 +8,6 @@ import com.mongodb.MongoClientSettings;
 import com.mongodb.MongoException;
 import com.mongodb.client.MongoClient;
 import com.mongodb.client.MongoClients;
-import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoDatabase;
 import com.teixeira.aizawa.Aizawa;
 import com.teixeira.aizawa.database.collections.UserCollection;
@@ -40,7 +39,7 @@ public class MongoDB {
   }
 
   private MongoClientSettings getSettings() {
-    ConnectionString connectionString = new ConnectionString(Aizawa.getInstance().getEnv("MONGO_URI"));
+    ConnectionString connectionString = new ConnectionString(Aizawa.getInstance().getConfig().getMongoUri());
 
     CodecRegistry pojoCodecRegistry = fromRegistries(MongoClientSettings.getDefaultCodecRegistry(),
         fromProviders(PojoCodecProvider.builder().automatic(true).build()));

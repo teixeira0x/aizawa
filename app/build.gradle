@@ -10,7 +10,6 @@ dependencies {
   implementation fileTree(dir: 'libs', include: ['*.jar'])
 
   implementation("com.google.code.gson:gson:2.10.1")
-  implementation("io.github.cdimascio:dotenv-java:3.0.0")
   implementation("org.mongodb:mongodb-driver-sync:5.0.0")
   implementation("org.slf4j:slf4j-log4j12:2.0.12")
   implementation("org.slf4j:slf4j-jdk14:2.0.12")
