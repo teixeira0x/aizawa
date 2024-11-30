@@ -1,7 +1,6 @@
 package com.teixeira0x.aizawa;
 
 import com.teixeira0x.aizawa.commands.common.PingCommand;
-import com.teixeira0x.aizawa.commands.economy.wallet.WalletCommands;
 import com.teixeira0x.aizawa.commands.roleplay.RoleplayCommands;
 import com.teixeira0x.aizawa.config.Config;
 import com.teixeira0x.aizawa.listeners.ButtonListener;
@@ -16,7 +15,7 @@ public class Aizawa {
 
   private Aizawa() {
     SlashCommandListener slashCommandListener =
-        new SlashCommandListener().addCommands(new PingCommand(), new RoleplayCommands(), new WalletCommands());
+        new SlashCommandListener().addCommands(new PingCommand(), new RoleplayCommands());
 
     jda = JDABuilder.createDefault(config.getBotToken())
               .addEventListeners(slashCommandListener, new ButtonListener())
