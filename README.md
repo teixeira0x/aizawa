@@ -8,6 +8,7 @@
 - [JDA](https://github.com/discord-jda/JDA)
 - [slf4j](https://github.com/qos-ch/slf4j)
 - [MongoDB](https://www.mongodb.com/pt-br)
+- [OtakuGIFs](https://otakugifs.xyz/)
 
 # Hosted by
 

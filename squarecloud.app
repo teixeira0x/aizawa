@@ -1,0 +1,6 @@
+DISPLAY_NAME=aizawa
+MAIN=aizawa.jar
+VERSION=recommended
+MEMORY=512
+AUTORESTART=false
+DESCRIPTION=Bot Aizawa
