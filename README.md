@@ -4,7 +4,15 @@
 
 <h2 align="center"><b>Aizawa BOT</b></h2>
 
-## Ferramentas
-- [MongoDB](https://www.mongodb.com/pt-br)
-- [slf4j](https://github.com/qos-ch/slf4j)
+## Tools
 - [JDA](https://github.com/discord-jda/JDA)
+- [slf4j](https://github.com/qos-ch/slf4j)
+- [MongoDB](https://www.mongodb.com/pt-br)
+
+# Hosted by
+
+<a href="https://squarecloud.app">
+<img src="./assets/squarecloud.webp" alt="Square Cloud" width="100" height="100"/>
+</a>
+
+<b>Square Cloud</b>
