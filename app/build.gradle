@@ -24,7 +24,7 @@ java {
 }
 
 application {
-  mainClass = 'com.teixeira.aizawa.Aizawa'
+  mainClass = 'com.teixeira0x.aizawa.Aizawa'
 }
 
 tasks.named('test') {

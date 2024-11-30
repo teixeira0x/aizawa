@@ -1,0 +1,1 @@
+find . -type f -name "*.java" -exec clang-format -i {} +
