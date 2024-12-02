@@ -2,10 +2,12 @@ package com.teixeira0x.aizawa.listeners;
 
 import com.teixeira0x.aizawa.Aizawa;
 import com.teixeira0x.aizawa.config.Config;
+import com.teixeira0x.aizawa.utils.MentionUtils;
 import com.teixeira0x.aizawa.utils.TextFormatter;
 import java.time.OffsetDateTime;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.entities.Guild;
+import net.dv8tion.jda.api.entities.User;
 import net.dv8tion.jda.api.entities.channel.concrete.TextChannel;
 import net.dv8tion.jda.api.events.GenericEvent;
 import net.dv8tion.jda.api.events.guild.GuildJoinEvent;
@@ -53,16 +55,25 @@ public class LogListener implements EventListener {
     String iconUrl = guild.getIconUrl();
     String guildId = guild.getId();
     String guildName = guild.getName();
+    String commandId = event.getCommandId();
     String commandName = event.getFullCommandName();
+
+    User user = event.getUser();
+    String userId = user.getId();
+    String userName = user.getName();
 
     EmbedBuilder embed = new EmbedBuilder()
                              .setTitle("Um comando foi utilizado")
                              .setThumbnail(iconUrl)
                              .setTimestamp(OffsetDateTime.now());
 
-    embed.addField("Comando:", TextFormatter.bold(commandName), false);
+    embed.addField("Comando:", MentionUtils.commandMention(commandId, commandName), false);
     embed.addField("Servidor:",
-        String.format("Id: %s\nName: %s", TextFormatter.inlineCode(guildId), TextFormatter.inlineCode(guildName)),
+        String.format(
+            "**Id**: %s\n**Nome**: %s", TextFormatter.inlineCode(guildId), TextFormatter.inlineCode(guildName)),
+        false);
+    embed.addField("Usuário:",
+        String.format("**Id**: %s\n**Nome**: %s", TextFormatter.inlineCode(userId), TextFormatter.inlineCode(userName)),
         false);
 
     getLogChannel().sendMessageEmbeds(embed.build()).queue();
