@@ -13,5 +13,5 @@
 # Hosted by
 
 <a href="https://squarecloud.app">
-<img src="./assets/squarecloud.webp" alt="Square Cloud" height="100"/>
+<img src="./assets/squarecloud.webp" alt="Square Cloud" height="80"/>
 </a>
