@@ -4,6 +4,7 @@ import com.teixeira0x.aizawa.commands.common.PingCommand;
 import com.teixeira0x.aizawa.commands.roleplay.RoleplayCommands;
 import com.teixeira0x.aizawa.config.Config;
 import com.teixeira0x.aizawa.listeners.ButtonListener;
+import com.teixeira0x.aizawa.listeners.LogListener;
 import com.teixeira0x.aizawa.listeners.SlashCommandListener;
 import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.JDABuilder;
@@ -18,8 +19,12 @@ public class Aizawa {
         new SlashCommandListener().addCommands(new PingCommand(), new RoleplayCommands());
 
     jda = JDABuilder.createDefault(config.getBotToken())
-              .addEventListeners(slashCommandListener, new ButtonListener())
+              .addEventListeners(slashCommandListener, new LogListener(), new ButtonListener())
               .build();
+  }
+
+  public JDA getJDA() {
+    return jda;
   }
 
   public Config getConfig() {

@@ -43,7 +43,7 @@ public class ButtonListener implements EventListener {
     }
   }
 
-  public void onButtonInteraction(ButtonInteractionEvent event) {
+  private void onButtonInteraction(ButtonInteractionEvent event) {
     long messageId = event.getMessageIdLong();
 
     ScheduledButtonAction scheduledAction = ACTIONS.get(messageId);

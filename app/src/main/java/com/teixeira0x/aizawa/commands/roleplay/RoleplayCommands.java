@@ -60,7 +60,7 @@ public class RoleplayCommands extends SlashCommand {
 
       String description;
       if (sender.getIdLong() == receiver.getIdLong()) {
-        description = "%s se abraçou!? :thinking:";
+        description = RandomUtils.choice("%s se abraçou!? :thinking:", "%s deu um abraço em si mesmo?! :thinking:");
       } else {
         description = RandomUtils.choice("%s abraçou %s", "%s deu um abraço em %s");
       }
