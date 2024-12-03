@@ -7,14 +7,11 @@ repositories {
 }
 
 dependencies {
-  implementation fileTree(dir: 'libs', include: ['*.jar'])
-
+  implementation("jakarta.annotation:jakarta.annotation-api:2.1.1")
   implementation("com.google.code.gson:gson:2.10.1")
   implementation("org.mongodb:mongodb-driver-sync:5.0.0")
-  implementation("org.slf4j:slf4j-log4j12:2.0.12")
   implementation("org.slf4j:slf4j-jdk14:2.0.12")
   implementation("net.dv8tion:JDA:5.2.1")
-  implementation("jakarta.annotation:jakarta.annotation-api:2.1.1")
 }
 
 // Apply a specific Java toolchain to ease working on different environments.
