@@ -1,4 +1,4 @@
-package com.teixeira0x.aizawa.database.collections;
+package com.teixeira0x.aizawa.feature.database.collections;
 
 import com.mongodb.MongoException;
 import com.mongodb.client.MongoCollection;
@@ -7,7 +7,7 @@ import com.mongodb.client.result.DeleteResult;
 import com.mongodb.client.result.InsertOneResult;
 import com.mongodb.client.result.UpdateResult;
 import com.teixeira0x.aizawa.core.database.collections.IUserCollection;
-import com.teixeira0x.aizawa.database.entity.UserEntity;
+import com.teixeira0x.aizawa.core.database.entity.UserEntity;
 import java.util.ArrayList;
 import java.util.List;
 import org.bson.Document;

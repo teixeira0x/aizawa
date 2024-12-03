@@ -1,8 +1,8 @@
-package com.teixeira0x.aizawa.commands.roleplay;
+package com.teixeira0x.aizawa.feature.commands.roleplay;
 
-import com.teixeira0x.aizawa.commands.roleplay.api.OtakusGifAPI;
 import com.teixeira0x.aizawa.core.action.ActionResult;
 import com.teixeira0x.aizawa.core.command.SlashCommand;
+import com.teixeira0x.aizawa.feature.commands.roleplay.api.OtakusGifAPI;
 import com.teixeira0x.aizawa.listeners.ButtonListener;
 import com.teixeira0x.aizawa.utils.RandomUtils;
 import java.awt.Color;

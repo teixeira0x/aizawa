@@ -1,9 +1,9 @@
 package com.teixeira0x.aizawa;
 
-import com.teixeira0x.aizawa.commands.common.PingCommand;
-import com.teixeira0x.aizawa.commands.roleplay.RoleplayCommands;
 import com.teixeira0x.aizawa.config.Config;
 import com.teixeira0x.aizawa.core.service.ServiceManager;
+import com.teixeira0x.aizawa.feature.commands.common.PingCommand;
+import com.teixeira0x.aizawa.feature.commands.roleplay.RoleplayCommands;
 import com.teixeira0x.aizawa.feature.presence.PresenceService;
 import com.teixeira0x.aizawa.feature.service.ServiceManagerImpl;
 import com.teixeira0x.aizawa.listeners.ButtonListener;

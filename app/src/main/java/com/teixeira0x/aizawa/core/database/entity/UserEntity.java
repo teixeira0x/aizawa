@@ -1,4 +1,4 @@
-package com.teixeira0x.aizawa.database.entity;
+package com.teixeira0x.aizawa.core.database.entity;
 
 import java.math.BigDecimal;
 import org.bson.types.ObjectId;

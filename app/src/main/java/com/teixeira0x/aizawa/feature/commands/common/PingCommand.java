@@ -1,4 +1,4 @@
-package com.teixeira0x.aizawa.commands.common;
+package com.teixeira0x.aizawa.feature.commands.common;
 
 import com.teixeira0x.aizawa.core.command.SlashCommand;
 import net.dv8tion.jda.api.EmbedBuilder;

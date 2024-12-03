@@ -1,8 +1,8 @@
 package com.teixeira0x.aizawa.controllers;
 
-import com.teixeira0x.aizawa.database.MongoDB;
-import com.teixeira0x.aizawa.database.collections.UserCollection;
-import com.teixeira0x.aizawa.database.entity.UserEntity;
+import com.teixeira0x.aizawa.core.database.entity.UserEntity;
+import com.teixeira0x.aizawa.feature.database.MongoDB;
+import com.teixeira0x.aizawa.feature.database.collections.UserCollection;
 import java.math.BigDecimal;
 import net.dv8tion.jda.api.entities.User;
 

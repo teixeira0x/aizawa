@@ -1,4 +1,4 @@
-package com.teixeira0x.aizawa.database;
+package com.teixeira0x.aizawa.feature.database;
 
 import static org.bson.codecs.configuration.CodecRegistries.fromProviders;
 import static org.bson.codecs.configuration.CodecRegistries.fromRegistries;
@@ -10,8 +10,8 @@ import com.mongodb.client.MongoClient;
 import com.mongodb.client.MongoClients;
 import com.mongodb.client.MongoDatabase;
 import com.teixeira0x.aizawa.Aizawa;
-import com.teixeira0x.aizawa.database.collections.UserCollection;
-import com.teixeira0x.aizawa.database.entity.UserEntity;
+import com.teixeira0x.aizawa.core.database.entity.UserEntity;
+import com.teixeira0x.aizawa.feature.database.collections.UserCollection;
 import org.bson.codecs.configuration.CodecRegistry;
 import org.bson.codecs.pojo.PojoCodecProvider;
 

@@ -1,4 +1,4 @@
-package com.teixeira0x.aizawa.commands.roleplay.api;
+package com.teixeira0x.aizawa.feature.commands.roleplay.api;
 
 import com.teixeira0x.aizawa.utils.RequestUtils;
 import java.io.IOException;
