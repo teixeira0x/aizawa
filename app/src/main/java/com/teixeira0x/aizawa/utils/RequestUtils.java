@@ -11,8 +11,6 @@ import java.util.Map;
 /**
  * Some useful methods for working with REST API.
  *
- * <p>https://www.jetbrains.com/help/teamcity/rest/manage-users.html
- *
  * @author Felipe Teixeira.
  */
 public class RequestUtils {
@@ -27,10 +25,22 @@ public class RequestUtils {
   }
 
   public static <T> T get(Class<T> type, String apiURL, Map<String, String> properties) throws IOException {
+    return new Gson().fromJson(get(apiURL, properties), type);
+  }
+
+  public static String get(String apiURL) throws IOException {
+    return get(apiURL, null);
+  }
+
+  public static String get(String apiURL, Map<String, String> properties) throws IOException {
+    return request("GET", apiURL, properties);
+  }
+
+  public static String request(String method, String apiURL, Map<String, String> properties) throws IOException {
     URL url = new URL(apiURL);
 
     HttpURLConnection conn = (HttpURLConnection) url.openConnection();
-    conn.setRequestMethod("GET");
+    conn.setRequestMethod(method);
 
     if (properties != null) {
       for (Map.Entry<String, String> property : properties.entrySet()) {
@@ -58,7 +68,7 @@ public class RequestUtils {
 
     conn.disconnect();
 
-    return new Gson().fromJson(output.toString(), type);
+    return output.toString(); // Retun the response
   }
 
   private RequestUtils() {}

@@ -2,7 +2,8 @@ package com.teixeira0x.aizawa.feature.commands.roleplay;
 
 import com.teixeira0x.aizawa.core.action.ActionResult;
 import com.teixeira0x.aizawa.core.command.SlashCommand;
-import com.teixeira0x.aizawa.feature.commands.roleplay.api.OtakusGifAPI;
+import com.teixeira0x.aizawa.feature.gif.OtakuGifsAPI;
+import com.teixeira0x.aizawa.feature.gif.model.GifURL;
 import com.teixeira0x.aizawa.listeners.ButtonListener;
 import com.teixeira0x.aizawa.utils.RandomUtils;
 import java.awt.Color;
@@ -50,7 +51,7 @@ public class RoleplayCommands extends SlashCommand {
 
     @Override
     protected void executeRoleplay(InteractionHook hook, User sender, User receiver) {
-      OtakusGifAPI hugGif = OtakusGifAPI.get("hug");
+      GifURL hugGif = OtakuGifsAPI.get("hug");
       if (hugGif == null) {
         hook.deleteOriginal().queue(unused -> {
           hook.sendMessage("Não foi possivel obter um gif, tente novamente mais tarde!").setEphemeral(true).queue();
@@ -103,7 +104,7 @@ public class RoleplayCommands extends SlashCommand {
 
     @Override
     protected void executeRoleplay(InteractionHook hook, User sender, User receiver) {
-      OtakusGifAPI kissGif = OtakusGifAPI.get("kiss");
+      GifURL kissGif = OtakuGifsAPI.get("kiss");
       if (kissGif == null) {
         hook.deleteOriginal().queue(unused -> {
           hook.sendMessage("Não foi possivel obter um gif, tente novamente mais tarde!").setEphemeral(true).queue();
@@ -156,7 +157,7 @@ public class RoleplayCommands extends SlashCommand {
 
     @Override
     protected void executeRoleplay(InteractionHook hook, User sender, User receiver) {
-      OtakusGifAPI punchGif = OtakusGifAPI.get("punch");
+      GifURL punchGif = OtakuGifsAPI.get("punch");
       if (punchGif == null) {
         hook.deleteOriginal().queue(unused -> {
           hook.sendMessage("Não foi possivel obter um gif, tente novamente mais tarde!").setEphemeral(true).queue();
