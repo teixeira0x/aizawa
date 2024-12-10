@@ -3,13 +3,15 @@ package com.teixeira0x.aizawa.utils;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.net.HttpURLConnection;
-import java.net.URL;
-import java.util.Map;
+import java.io.InputStream;
 
 public class FileUtils {
   public static String readFromResources(String name) throws IOException {
-    InputStreamReader in = new InputStreamReader(FileUtils.class.getClassLoader().getResourceAsStream(name));
+    return readFromInputStream(FileUtils.class.getClassLoader().getResourceAsStream(name));
+  }
+
+  public static String readFromInputStream(InputStream is) throws IOException {
+    InputStreamReader in = new InputStreamReader(is);
     BufferedReader br = new BufferedReader(in);
 
     StringBuilder output = new StringBuilder();

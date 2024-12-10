@@ -1,6 +1,7 @@
 package com.teixeira0x.aizawa.listeners;
 
 import com.teixeira0x.aizawa.core.command.SlashCommand;
+import jakarta.annotation.Nullable;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -10,6 +11,7 @@ import net.dv8tion.jda.api.events.GenericEvent;
 import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
 import net.dv8tion.jda.api.events.session.ReadyEvent;
 import net.dv8tion.jda.api.hooks.EventListener;
+import net.dv8tion.jda.api.interactions.DiscordLocale;
 import net.dv8tion.jda.api.interactions.commands.build.CommandData;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -60,7 +62,7 @@ public class SlashCommandListener implements EventListener {
   }
 
   private void onSlashCommandInteraction(SlashCommandInteractionEvent event) {
-    SlashCommand command = findSlashCommand(event.getFullCommandName());
+    SlashCommand command = findSlashCommandByName(event.getFullCommandName());
     if (command != null) {
       command.execute(event);
 
@@ -72,5 +74,36 @@ public class SlashCommandListener implements EventListener {
     int commandIndex = slashCommandsIndex.get(fullname);
     SlashCommand command = slashCommands.get(commandIndex);
     return command;
+  }
+
+  @Nullable
+  private SlashCommand findSlashCommandByName(String fullname) {
+    String[] parts = fullname.split(" ");
+
+    for (SlashCommand slashCommand : slashCommands) {
+      Map<DiscordLocale, String> names = slashCommand.getLocalizedNames();
+
+      if (names.values().contains(parts[0])) {
+
+        if (parts.length == 2) {
+          return findSubSlashCommand(slashCommand.getSubcommands(), parts[1]);
+        }
+
+        return slashCommand;
+      }
+    }
+    return null;
+  }
+
+  @Nullable
+  private SlashCommand findSubSlashCommand(SlashCommand[] subcommands, String name) {
+    for (SlashCommand subcommand : subcommands) {
+      Map<DiscordLocale, String> names = subcommand.getLocalizedNames();
+      if (names.values().contains(name)) {
+        return subcommand;
+      }
+    }
+
+    return null;
   }
 }
