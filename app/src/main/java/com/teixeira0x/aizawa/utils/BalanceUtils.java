@@ -13,4 +13,8 @@ public class BalanceUtils {
   public static String formatBalance(BigDecimal balance) {
     return balanceFormat.format(balance);
   }
+
+public static class Test {
+  
+}
 }

@@ -1,0 +1,17 @@
+# Commands
+
+common.ping.name=ping
+common.ping.description=See my current ping
+
+roleplay.name=roleplay
+roleplay.description=Roleplay related commands
+roleplay.hug.name=hug
+roleplay.hug.description=Hug a user
+roleplay.kiss.name=kiss
+roleplay.kiss.description=Kiss a user
+roleplay.punch.name=punch
+roleplay.punch.description=Punch a user
+
+# Messages
+
+common.ping.message=My current ping: %s
