@@ -60,12 +60,10 @@ public abstract class SlashCommand {
 
   private final SubcommandData toSubcommandData() {
     if (!isSubcommand)
-      throw new RuntimeException(
-          "Only `SlashCommand` configured as a subcommand can use this function.");
+      throw new RuntimeException("Only `SlashCommand` configured as a subcommand can use this function.");
 
     SubcommandData subcommandData =
-        new SubcommandData(stringsManager.getString(name), stringsManager.getString(description))
-            .addOptions(options);
+        new SubcommandData(stringsManager.getString(name), stringsManager.getString(description)).addOptions(options);
 
     DiscordLocale[] locales = stringsManager.getAvailableLocales();
     for (DiscordLocale locale : locales) {

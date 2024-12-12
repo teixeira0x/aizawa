@@ -14,7 +14,5 @@ public class BalanceUtils {
     return balanceFormat.format(balance);
   }
 
-public static class Test {
-  
-}
+  public static class Test {}
 }

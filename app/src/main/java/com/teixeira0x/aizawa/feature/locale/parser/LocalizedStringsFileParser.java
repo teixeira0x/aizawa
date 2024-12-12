@@ -9,7 +9,6 @@ import java.util.List;
 import java.util.Map;
 
 public class LocalizedStringsFileParser implements StringsFileParser {
-
   @Override
   public Map<String, String> parse(InputStream inputStream) {
     Map<String, String> strings = new HashMap<>();

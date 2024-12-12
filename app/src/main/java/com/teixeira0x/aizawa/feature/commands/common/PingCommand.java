@@ -15,9 +15,7 @@ public class PingCommand extends SlashCommand {
     long ping = event.getJDA().getGatewayPing();
 
     EmbedBuilder embed = new EmbedBuilder();
-    embed.setDescription(
-        String.format(
-            stringsManager.getString(event.getGuildLocale(), "common.ping.message"), ping));
+    embed.setDescription(String.format(stringsManager.getString(event.getGuildLocale(), "common.ping.message"), ping));
     event.replyEmbeds(embed.build()).queue();
   }
 }

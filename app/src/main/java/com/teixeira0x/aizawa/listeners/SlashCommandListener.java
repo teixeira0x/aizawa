@@ -84,7 +84,6 @@ public class SlashCommandListener implements EventListener {
       Map<DiscordLocale, String> names = slashCommand.getLocalizedNames();
 
       if (names.values().contains(parts[0])) {
-
         if (parts.length == 2) {
           return findSubSlashCommand(slashCommand.getSubcommands(), parts[1]);
         }

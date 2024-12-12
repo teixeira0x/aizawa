@@ -6,7 +6,6 @@ import jakarta.annotation.Nullable;
 import net.dv8tion.jda.api.interactions.DiscordLocale;
 
 public class StringsHelper {
-
   private final DiscordLocale locale;
   private final StringsManager stringsManager;
 

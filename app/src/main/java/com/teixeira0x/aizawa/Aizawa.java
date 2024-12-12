@@ -27,14 +27,12 @@ public class Aizawa {
     LogListener logListener = new LogListener();
 
     SlashCommandListener slashCommandListener =
-        new SlashCommandListener()
-            .addCommands(new PingCommand(stringsManager), new RoleplayCommands(stringsManager));
+        new SlashCommandListener().addCommands(new PingCommand(stringsManager), new RoleplayCommands(stringsManager));
     ButtonListener buttonListener = new ButtonListener();
 
-    this.jda =
-        JDABuilder.create(config.getBotToken(), GatewayIntent.getIntents(GatewayIntent.ALL_INTENTS))
-            .addEventListeners(statusListener, logListener, slashCommandListener, buttonListener)
-            .build();
+    this.jda = JDABuilder.create(config.getBotToken(), GatewayIntent.getIntents(GatewayIntent.ALL_INTENTS))
+                   .addEventListeners(statusListener, logListener, slashCommandListener, buttonListener)
+                   .build();
   }
 
   public JDA getJDA() {
@@ -48,8 +46,7 @@ public class Aizawa {
   private static Aizawa sInstance;
 
   public static void main(String[] args) {
-    sInstance =
-        new Aizawa(new LocalizedStringsManager(), new ServiceManagerImpl(new PresenceService()));
+    sInstance = new Aizawa(new LocalizedStringsManager(), new ServiceManagerImpl(new PresenceService()));
   }
 
   public static Aizawa getInstance() {
